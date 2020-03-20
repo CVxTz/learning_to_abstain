@@ -17,19 +17,26 @@ from utils import download_model
 
 class ImagePredictor:
     def __init__(
-        self, model_path, resize_size, pre_processing_function=preprocess_input
+        self,
+        model_path,
+        resize_size,
+        class_display_names,
+        pre_processing_function=preprocess_input,
     ):
         self.model_path = model_path
         self.pre_processing_function = pre_processing_function
         self.model = load_model(self.model_path, compile=False)
         self.resize_size = resize_size
+        self.class_display_names = class_display_names
 
     @classmethod
     def init_from_config_path(cls, config_path):
         with open(config_path, "r") as f:
             config = yaml.load(f, yaml.SafeLoader)
         predictor = cls(
-            model_path=config["model_path"], resize_size=config["resize_shape"],
+            model_path=config["model_path"],
+            resize_size=config["resize_shape"],
+            class_display_names=config["class_display_names"],
         )
         return predictor
 
@@ -39,9 +46,7 @@ class ImagePredictor:
             config = yaml.load(f, yaml.SafeLoader)
 
         download_model(
-            config["model_url"],
-            config["model_path"],
-            config["model_sha256"],
+            config["model_url"], config["model_path"], config["model_sha256"],
         )
 
         return cls.init_from_config_path(config_path)
@@ -51,8 +56,9 @@ class ImagePredictor:
         arr = self.pre_processing_function(arr)
         pred = self.model.predict(arr[np.newaxis, ...]).ravel()
         label, max_score = np.argmax(pred), np.max(pred)
-        label = label + 1 # labels are 1-indexed while arrays are 0-indexed ..;
-        return {"label": label, "score": max_score}
+        label_name = self.class_display_names[label]
+        # label = label + 1  # labels are 1-indexed while arrays are 0-indexed ..;
+        return {"label": label_name, "score": float(max_score)}
 
     def predict_from_path(self, path):
         arr = read_img_from_path(path)
