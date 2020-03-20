@@ -1,0 +1,2 @@
+resize_shape: [224, 224]
+image_model_path: "model.h5"
