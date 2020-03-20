@@ -1,4 +1,4 @@
 resize_shape: [224, 224]
-image_model_path: "model.h5"
+model_path: "model.h5"
 model_url: "/model.h5"
 model_sha256: ""

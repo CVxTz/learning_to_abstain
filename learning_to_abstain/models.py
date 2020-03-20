@@ -17,8 +17,8 @@ def get_model_classification(
     input_shape=(None, None, 3),
     model="mobilenet",
     weights="imagenet",
-    n_classes=4,
-    multi_class=False,
+    n_classes=102,
+    multi_class=True,
 ):
     inputs = Input(input_shape)
     if model == "mobilenet":

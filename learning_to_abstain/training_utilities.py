@@ -68,7 +68,7 @@ def batch_generator(
             targets = [sample.label for sample in batch_samples]
 
             X = np.array(images)
-            Y = np.array(targets)-1
+            Y = np.array(targets) - 1
             Y = np.eye(n_label)[Y, :]
             yield X, Y
 
@@ -77,7 +77,7 @@ def df_to_list_samples(df, fold):
     image_name_col = "ImageID"
     label_col = "label"
 
-    paths = df[image_name_col].apply(lambda x: str(Path(fold) / (x + ".jpg") )).tolist()
+    paths = df[image_name_col].apply(lambda x: str(Path(fold) / (x + ".jpg"))).tolist()
     list_labels = df[label_col].values.tolist()
 
     samples = [
@@ -85,8 +85,12 @@ def df_to_list_samples(df, fold):
         for path, label in zip(paths, list_labels)
     ]
 
-    train_samples = [a for a in samples if int(a.path.split("_")[-1].replace('.jpg', ''))%5 != 0]
-    val_samples = [a for a in samples if int(a.path.split("_")[-1].replace('.jpg', ''))%5 == 0]
+    train_samples = [
+        a for a in samples if int(a.path.split("_")[-1].replace(".jpg", "")) % 5 != 0
+    ]
+    val_samples = [
+        a for a in samples if int(a.path.split("_")[-1].replace(".jpg", "")) % 5 == 0
+    ]
 
     return train_samples, val_samples
 

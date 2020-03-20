@@ -8,8 +8,8 @@ data = sio.loadmat(path)
 
 print(data)
 
-labels = data['labels'][0].tolist()
-images = ['image_%05d'%(i+1) for i in range(len(labels))]
+labels = data["labels"][0].tolist()
+images = ["image_%05d" % (i + 1) for i in range(len(labels))]
 
 df = pd.DataFrame({"ImageID": images, "label": labels})
 
