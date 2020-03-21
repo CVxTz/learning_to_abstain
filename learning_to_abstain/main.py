@@ -1,7 +1,7 @@
-import sys
-import matplotlib.pyplot as plt
-import altair as alt
 import os
+import sys
+
+import matplotlib.pyplot as plt
 
 sys.path.append("learning_to_abstain")
 

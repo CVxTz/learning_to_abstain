@@ -1,8 +1,7 @@
 import argparse
-import json
-import os
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
@@ -49,21 +48,31 @@ def train_from_csv(csv_train, training_config_path):
     reduce = ReduceLROnPlateau(monitor="val_loss", mode="min", patience=50, min_lr=1e-7)
     early = EarlyStopping(monitor="val_loss", mode="min", patience=300)
 
-    try:
-        model.load_weights(training_config["model_path"])
-    except:
-        print("No model to load")
+    # try:
+    #     model.load_weights(training_config["model_path"])
+    # except:
+    #     print("No model to load")
 
-    model.fit_generator(
-        train_gen,
-        steps_per_epoch=300,
-        validation_data=val_gen,
-        validation_steps=100,
-        epochs=training_config["epochs"],
-        callbacks=[checkpoint, reduce, early],
-        use_multiprocessing=True,
-        workers=8,
-    )
+    for _ in range(training_config["epochs"]):
+        model.fit_generator(
+            train_gen,
+            steps_per_epoch=100,
+            validation_data=val_gen,
+            validation_steps=50,
+            epochs=1,
+            callbacks=[checkpoint, reduce, early],
+            use_multiprocessing=True,
+            workers=8,
+            verbose=2,
+        )
+        X, Y = next(train_gen)
+
+        pred = model.predict(X)
+
+        print(pred[3, -1])
+
+        for a, b in zip(pred[3, ...].tolist(), Y[3, ...].tolist()):
+            print(round(a, 2), b)
 
 
 if __name__ == "__main__":

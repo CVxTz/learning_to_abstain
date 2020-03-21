@@ -1,6 +1,5 @@
-import scipy.io as sio
 import pandas as pd
-
+import scipy.io as sio
 
 path = "imagelabels.mat"
 

@@ -1,8 +1,6 @@
 import argparse
-import json
 
 import numpy as np
-import pandas as pd
 import yaml
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.models import load_model
