@@ -45,34 +45,46 @@ def train_from_csv(csv_train, training_config_path):
         save_best_only=True,
         mode="min",
     )
-    reduce = ReduceLROnPlateau(monitor="val_loss", mode="min", patience=50, min_lr=1e-7)
-    early = EarlyStopping(monitor="val_loss", mode="min", patience=300)
+    reduce = ReduceLROnPlateau(monitor="val_loss", mode="min", patience=15, min_lr=1e-7)
+    early = EarlyStopping(monitor="val_loss", mode="min", patience=30)
 
     # try:
     #     model.load_weights(training_config["model_path"])
     # except:
     #     print("No model to load")
 
-    for _ in range(training_config["epochs"]):
-        model.fit_generator(
-            train_gen,
-            steps_per_epoch=100,
-            validation_data=val_gen,
-            validation_steps=50,
-            epochs=1,
-            callbacks=[checkpoint, reduce, early],
-            use_multiprocessing=True,
-            workers=8,
-            verbose=2,
-        )
-        X, Y = next(train_gen)
+    model.fit_generator(
+        train_gen,
+        steps_per_epoch=100,
+        validation_data=val_gen,
+        validation_steps=50,
+        epochs=1000,
+        callbacks=[checkpoint, reduce, early],
+        use_multiprocessing=True,
+        workers=8,
+        verbose=2,
+    )
 
-        pred = model.predict(X)
-
-        print(pred[3, -1])
-
-        for a, b in zip(pred[3, ...].tolist(), Y[3, ...].tolist()):
-            print(round(a, 2), b)
+    # for _ in range(training_config["epochs"]):
+    #     model.fit_generator(
+    #         train_gen,
+    #         steps_per_epoch=100,
+    #         validation_data=val_gen,
+    #         validation_steps=50,
+    #         epochs=1,
+    #         callbacks=[checkpoint, reduce, early],
+    #         use_multiprocessing=True,
+    #         workers=8,
+    #         verbose=2,
+    #     )
+    #     X, Y = next(train_gen)
+    #
+    #     pred = model.predict(X)
+    #
+    #     print(pred[3, -1])
+    #
+    #     for a, b in zip(pred[3, ...].tolist(), Y[3, ...].tolist()):
+    #         print(round(a, 2), b)
 
 
 if __name__ == "__main__":

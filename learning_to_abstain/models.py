@@ -29,11 +29,11 @@ def custom_acc(y_true, y_pred):
 
 
 def repeat1d(x, n):
-  x = array_ops.expand_dims(x, 1)
+    x = array_ops.expand_dims(x, 1)
 
-  pattern = array_ops.stack([1, n])
+    pattern = array_ops.stack([1, n])
 
-  return array_ops.tile(x, pattern)
+    return array_ops.tile(x, pattern)
 
 
 def abstain_loss(y_true, y_pred):
@@ -48,9 +48,9 @@ def abstain_loss(y_true, y_pred):
     y_true = math_ops.cast(y_true, y_pred.dtype)
     epsilon_ = constant_op.constant(K.epsilon(), dtype=y_pred.dtype.base_dtype)
 
-    return -0.4 * math_ops.reduce_sum(
+    return -0.5 * math_ops.reduce_sum(
         y_true * math_ops.log(new_y_pred + epsilon_), axis=-1
-    ) - 0.6 * math_ops.reduce_sum(
+    ) - 0.5 * math_ops.reduce_sum(
         y_true * math_ops.log(y_pred[:, :-1] + epsilon_), axis=-1
     )
 
@@ -98,6 +98,7 @@ def get_model_classification(
 
 # For debugging purposes
 
+
 def get_model_mnist(
     input_shape=(None, None, 1), n_classes=102,
 ):
@@ -114,6 +115,25 @@ def get_model_mnist(
     out = Dropout(0.5)(out)
 
     out = Dense(n_classes + 1, activation="softmax")(out)
+
+    model = Model(inputs, out)
+
+    model.compile(optimizer=Adam(0.0001), loss=abstain_loss, metrics=[custom_acc])
+
+    model.summary()
+
+    return model
+
+
+def get_model_mlp(
+    input_shape=(2,), n_classes=3,
+):
+    inputs = Input(input_shape)
+    x = Dense(32, activation="relu")(inputs)
+    x = Dropout(0.5)(x)
+    x = Dense(32, activation="relu")(x)
+
+    out = Dense(n_classes + 1, activation="softmax")(x)
 
     model = Model(inputs, out)
 

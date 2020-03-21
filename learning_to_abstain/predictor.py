@@ -53,10 +53,16 @@ class ImagePredictor:
         arr = resize_img(arr, h=self.resize_size[0], w=self.resize_size[1])
         arr = self.pre_processing_function(arr)
         pred = self.model.predict(arr[np.newaxis, ...]).ravel()
-        label, max_score = np.argmax(pred), np.max(pred)
+        classe_scores = pred[:-1]
+        abstain_score = pred[-1]
+        label, max_score = np.argmax(classe_scores), np.max(classe_scores)
         label_name = self.class_display_names[label]
         # label = label + 1  # labels are 1-indexed while arrays are 0-indexed ..;
-        return {"label": label_name, "score": float(max_score)}
+        return {
+            "label": label_name,
+            "score": float(max_score),
+            "abstain_score": float(abstain_score),
+        }
 
     def predict_from_path(self, path):
         arr = read_img_from_path(path)
