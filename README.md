@@ -181,7 +181,3 @@ all than make an obviously wrong one.
 #### References:
 
 [Deep Anomaly Detection with Outlier Exposure](https://arxiv.org/abs/1812.04606)
-
-#### Code :
-
-<br>
