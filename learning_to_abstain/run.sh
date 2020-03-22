@@ -1,2 +1,2 @@
-python ood_train.py
+#python ood_train.py
 python train.py

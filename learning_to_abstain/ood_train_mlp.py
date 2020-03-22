@@ -39,9 +39,15 @@ def train():
 
     for k in range(20):
 
+        ood_x_train = np.random.uniform(-10, 10, size=x_train.shape)
+        ood_y_train = np.ones(y_train.shape) / 2
+
+        X = np.concatenate([x_train, ood_x_train], axis=0)
+        Y = np.concatenate([y_train, ood_y_train], axis=0)
+
         model.fit(
-            x_train,
-            y_train,
+            X,
+            Y,
             validation_data=(x_test, y_test),
             epochs=5,
             callbacks=[checkpoint, reduce, early],
@@ -97,7 +103,7 @@ def train():
 
         plt.legend((s1, s2, s3), ("Class 0", "Class 1", "Out of distribution"))
         plt.colorbar(cntr2)
-        plt.savefig("../output/plot_%s.jpg" % k)
+        plt.savefig("../output/ood_plot_%s.jpg" % k)
         plt.close()
 
 
