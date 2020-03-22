@@ -8,11 +8,7 @@ import yaml
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
 from models import get_model_classification
-from training_utilities import (
-    df_to_list_samples,
-    batch_ood_generator,
-    get_ood_samples
-)
+from training_utilities import df_to_list_samples, batch_ood_generator, get_ood_samples
 
 
 def train_from_csv(csv_train, training_config_path):

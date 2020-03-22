@@ -56,7 +56,7 @@ class ImagePredictor:
         arr = self.pre_processing_function(arr)
         pred = self.model.predict(arr[np.newaxis, ...]).ravel()
         label, max_score = np.argmax(pred), np.max(pred)
-        label_name = self.class_display_names[label]
+        label_name = self.class_display_names[label] if max_score > 0.15 else "Don't Know"
         # label = label + 1  # labels are 1-indexed while arrays are 0-indexed ..;
         return {"label": label_name, "score": float(max_score)}
 
@@ -85,6 +85,6 @@ if __name__ == "__main__":
 
     predictor = ImagePredictor.init_from_config_url(predictor_config_path)
 
-    pred = predictor.predict_from_path("../example/data/image_00005.jpg")
+    pred = predictor.predict_from_file(open("../example/data/image_00005.jpg", "rb"))
 
     print(pred)

@@ -68,7 +68,9 @@ def get_model_mlp(
 
     model = Model(inputs, out)
 
-    model.compile(optimizer=Adam(0.0001), loss=categorical_crossentropy, metrics=["acc"])
+    model.compile(
+        optimizer=Adam(0.0001), loss=categorical_crossentropy, metrics=["acc"]
+    )
 
     model.summary()
 

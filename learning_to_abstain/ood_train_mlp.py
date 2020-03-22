@@ -82,21 +82,30 @@ def train():
         s1 = plt.scatter(
             x_test[:200, 0],
             x_test[:200, 1],
-            c=["r" if b < th else ("b" if a == 0 else "g") for a, b in zip(class_pred[:200], abstain[:200])],
+            c=[
+                "r" if b < th else ("b" if a == 0 else "g")
+                for a, b in zip(class_pred[:200], abstain[:200])
+            ],
             s=40,
             marker="o",
         )
         s2 = plt.scatter(
             x_test[200:400, 0],
             x_test[200:400, 1],
-            c=["r" if b < th else ("b" if a == 0 else "g") for a, b in zip(class_pred[200:400], abstain[200:400])],
+            c=[
+                "r" if b < th else ("b" if a == 0 else "g")
+                for a, b in zip(class_pred[200:400], abstain[200:400])
+            ],
             s=40,
             marker="^",
         )
         s3 = plt.scatter(
             x_test[-200:, 0],
             x_test[-200:, 1],
-            c=["r" if b < th else ("b" if a == 0 else "g") for a, b in zip(class_pred[-200:], abstain[-200:])],
+            c=[
+                "r" if b < th else ("b" if a == 0 else "g")
+                for a, b in zip(class_pred[-200:], abstain[-200:])
+            ],
             s=40,
             marker="x",
         )

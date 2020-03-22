@@ -148,10 +148,7 @@ def df_to_list_samples(df, fold):
 
 def get_ood_samples(path):
     paths = Path(path).glob("*.jpg")
-    samples = [
-        SampleFromPath(path=str(p), label=None)
-        for p in paths
-    ]
+    samples = [SampleFromPath(path=str(p), label=None) for p in paths]
     return samples
 
 
@@ -174,7 +171,9 @@ if __name__ == "__main__":
     print(ood_samples)
     print(max([x.label for x in train_samples]))
 
-    X, Y = next(batch_ood_generator(train_samples, ood_samples, base_path=config["data_path"]))
+    X, Y = next(
+        batch_ood_generator(train_samples, ood_samples, base_path=config["data_path"])
+    )
 
     print(X.shape, X)
     print(Y.shape, Y)
