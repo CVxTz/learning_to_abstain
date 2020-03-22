@@ -56,7 +56,9 @@ class ImagePredictor:
         arr = self.pre_processing_function(arr)
         pred = self.model.predict(arr[np.newaxis, ...]).ravel()
         label, max_score = np.argmax(pred), np.max(pred)
-        label_name = self.class_display_names[label] if max_score > 0.15 else "Don't Know"
+        label_name = (
+            self.class_display_names[label] if max_score > 0.15 else "Don't Know"
+        )
         # label = label + 1  # labels are 1-indexed while arrays are 0-indexed ..;
         return {"label": label_name, "score": float(max_score)}
 
