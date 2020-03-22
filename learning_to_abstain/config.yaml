@@ -1,6 +1,5 @@
 resize_shape: [128, 128]
 model_path: "model.h5"
-ood_model_path: "ood_model.h5"
 # Thanks to user m-co and https://github.com/jimgoo/caffe-oxford102/blob/master/class_labels.py
 
 class_display_names: ['pink primrose', 'hard-leaved pocket orchid', 'canterbury bells', 'sweet pea',
@@ -23,5 +22,5 @@ class_display_names: ['pink primrose', 'hard-leaved pocket orchid', 'canterbury 
                       'bougainvillea', 'camellia', 'mallow', 'mexican petunia', 'bromelia', 'blanket flower',
                       'trumpet creeper', 'blackberry lily']
 
-model_url: "/model.h5"
-model_sha256: ""
+model_url: "https://github.com/CVxTz/learning_to_abstain/releases/download/v0.1/model.h5"
+model_sha256: "c4957030897267d7d35ec3edb566d777f84140d1603a236cf13f565d236134a7"

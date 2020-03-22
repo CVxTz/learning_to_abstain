@@ -1,5 +1,5 @@
 pandas==0.25.2
-imageio==2.6.1
+imageio==2.8.0
 tensorflow==2.0.1
 imgaug==0.3.0
 numpy==1.17.3

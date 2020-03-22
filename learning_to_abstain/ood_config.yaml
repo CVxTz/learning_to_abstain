@@ -1,5 +1,7 @@
 resize_shape: [128, 128]
-image_model_path: "model.h5"
+model_path: "ood_model.h5"
+# Thanks to user m-co and https://github.com/jimgoo/caffe-oxford102/blob/master/class_labels.py
+
 class_display_names: ['pink primrose', 'hard-leaved pocket orchid', 'canterbury bells', 'sweet pea',
                       'english marigold', 'tiger lily', 'moon orchid', 'bird of paradise', 'monkshood',
                       'globe thistle', 'snapdragon', "colt's foot", 'king protea', 'spear thistle',
@@ -19,3 +21,6 @@ class_display_names: ['pink primrose', 'hard-leaved pocket orchid', 'canterbury 
                       'cyclamen ', 'watercress', 'canna lily', 'hippeastrum ', 'bee balm', 'ball moss', 'foxglove',
                       'bougainvillea', 'camellia', 'mallow', 'mexican petunia', 'bromelia', 'blanket flower',
                       'trumpet creeper', 'blackberry lily']
+
+model_url: "https://github.com/CVxTz/learning_to_abstain/releases/download/v0.1/ood_model.h5"
+model_sha256: "8c4d0751d6e25e12ba096bbbb29cd4b3ebe059f10a36e78241de3ec370250e54"
