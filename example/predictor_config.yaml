@@ -1,4 +1,4 @@
-resize_shape: [224, 224]
+resize_shape: [128, 128]
 image_model_path: "model.h5"
 class_display_names: ['pink primrose', 'hard-leaved pocket orchid', 'canterbury bells', 'sweet pea',
                       'english marigold', 'tiger lily', 'moon orchid', 'bird of paradise', 'monkshood',

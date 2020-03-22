@@ -1,5 +1,6 @@
-resize_shape: [224, 224]
+resize_shape: [128, 128]
 model_path: "model.h5"
+ood_model_path: "ood_model.h5"
 # Thanks to user m-co and https://github.com/jimgoo/caffe-oxford102/blob/master/class_labels.py
 
 class_display_names: ['pink primrose', 'hard-leaved pocket orchid', 'canterbury bells', 'sweet pea',

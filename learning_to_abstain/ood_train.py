@@ -10,7 +10,8 @@ from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, Early
 from models import get_model_classification
 from training_utilities import (
     df_to_list_samples,
-    batch_generator,
+    batch_ood_generator,
+    get_ood_samples
 )
 
 
@@ -22,25 +23,29 @@ def train_from_csv(csv_train, training_config_path):
 
     train_samples, val_samples = df_to_list_samples(train, fold="flowers")
 
+    ood_samples = get_ood_samples(training_config["ood_data_path"])
+
     model = get_model_classification()
 
     print("train_samples", len(train_samples))
     print("val_samples", len(val_samples))
 
-    train_gen = batch_generator(
+    train_gen = batch_ood_generator(
         train_samples,
+        ood_samples,
         resize_size=training_config["resize_shape"],
         augment=training_config["use_augmentation"],
         base_path=training_config["data_path"],
     )
-    val_gen = batch_generator(
+    val_gen = batch_ood_generator(
         val_samples,
+        ood_samples,
         resize_size=training_config["resize_shape"],
         base_path=training_config["data_path"],
     )
 
     checkpoint = ModelCheckpoint(
-        training_config["model_path"],
+        training_config["ood_model_path"],
         monitor="val_loss",
         verbose=1,
         save_best_only=True,
@@ -50,7 +55,7 @@ def train_from_csv(csv_train, training_config_path):
     early = EarlyStopping(monitor="val_loss", mode="min", patience=100)
 
     try:
-        model.load_weights(training_config["model_path"])
+        model.load_weights(training_config["ood_model_path"])
     except:
         print("No model to load")
 
@@ -69,7 +74,7 @@ def train_from_csv(csv_train, training_config_path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--csv_train", help="csv_train", default="imagelabels.csv",  #  oidv6-train
+        "--csv_train", help="csv_train", default="imagelabels.csv",
     )
     parser.add_argument(
         "--training_config_path",

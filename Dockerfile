@@ -3,7 +3,7 @@ COPY learning_to_abstain/main.py learning_to_abstain/preprocessing_utilities.py 
 COPY learning_to_abstain/predictor.py learning_to_abstain/utils.py /deploy/
 COPY learning_to_abstain/config.yaml /deploy/
 # Download from https://github.com/CVxTz/learning_to_abstain/releases
-COPY image_tag_suggestion/labels.json /deploy/
+COPY image_tag_suggestion/model.h5 /deploy/
 # Download from https://github.com/CVxTz/learning_to_abstain/releases
 COPY requirements.txt /deploy/
 WORKDIR /deploy/

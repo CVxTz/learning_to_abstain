@@ -73,6 +73,57 @@ def batch_generator(
             yield X, Y
 
 
+def batch_ood_generator(
+    list_samples,
+    ood_paths,
+    batch_size=32,
+    pre_processing_function=None,
+    resize_size=(128, 128),
+    augment=False,
+    n_label=102,
+    base_path="",
+):
+    seq = get_seq()
+    pre_processing_function = (
+        pre_processing_function
+        if pre_processing_function is not None
+        else preprocess_input
+    )
+    while True:
+        shuffle(list_samples)
+        shuffle(ood_paths)
+        for batch_samples, ood_samples in zip(
+            chunks(list_samples, size=batch_size // 2),
+            chunks(ood_paths, size=batch_size // 2),
+        ):
+            images = [
+                read_img_from_path(base_path + sample.path) for sample in batch_samples
+            ]
+
+            ood_images = [read_img_from_path(sample.path) for sample in ood_samples]
+
+            if augment:
+                images = seq.augment_images(images=images)
+                ood_images = seq.augment_images(images=ood_images)
+
+            images = [resize_img(x, h=resize_size[0], w=resize_size[1]) for x in images]
+            ood_images = [
+                resize_img(x, h=resize_size[0], w=resize_size[1]) for x in ood_images
+            ]
+
+            images = [pre_processing_function(a) for a in images]
+            ood_images = [pre_processing_function(a) for a in ood_images]
+
+            targets = [sample.label for sample in batch_samples]
+
+            X = np.array(images + ood_images)
+            Y1 = np.array(targets) - 1
+            Y1 = np.eye(n_label)[Y1, :].tolist()
+            Y2 = [[1 / n_label for _ in range(n_label)]] * len(ood_samples)
+            Y = np.array(Y1 + Y2)
+            yield X, Y
+
+
 def df_to_list_samples(df, fold):
     image_name_col = "ImageID"
     label_col = "label"
@@ -95,6 +146,15 @@ def df_to_list_samples(df, fold):
     return train_samples, val_samples
 
 
+def get_ood_samples(path):
+    paths = Path(path).glob("*.jpg")
+    samples = [
+        SampleFromPath(path=str(p), label=None)
+        for p in paths
+    ]
+    return samples
+
+
 if __name__ == "__main__":
     import yaml
     import pandas as pd
@@ -108,10 +168,13 @@ if __name__ == "__main__":
 
     train_samples, val_samples = df_to_list_samples(df, fold="flowers")
 
+    ood_samples = get_ood_samples(config["ood_data_path"])
+
     print(train_samples)
+    print(ood_samples)
     print(max([x.label for x in train_samples]))
 
-    X, Y = next(batch_generator(train_samples, base_path=config["data_path"]))
+    X, Y = next(batch_ood_generator(train_samples, ood_samples, base_path=config["data_path"]))
 
     print(X.shape, X)
     print(Y.shape, Y)

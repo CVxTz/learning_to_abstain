@@ -54,3 +54,22 @@ def get_model_classification(
     model.summary()
 
     return model
+
+
+def get_model_mlp(
+    input_shape=(2,), n_classes=2,
+):
+    inputs = Input(input_shape)
+    x = Dense(32, activation="relu")(inputs)
+    x = Dropout(0.5)(x)
+    x = Dense(32, activation="relu")(x)
+
+    out = Dense(n_classes, activation="softmax")(x)
+
+    model = Model(inputs, out)
+
+    model.compile(optimizer=Adam(0.0001), loss=categorical_crossentropy, metrics=["acc"])
+
+    model.summary()
+
+    return model
