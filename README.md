@@ -1,5 +1,7 @@
 ### Know What You Don’t Know: Getting Reliable Confidence Scores When Unsure of a Prediction
 
+Code for: https://towardsdatascience.com/know-what-you-dont-know-getting-reliable-confidence-scores-when-unsure-of-a-prediction-882f2f146726
+
 Exposure to out of sample examples as a way to get more meaningful prediction
 scores.
 
